@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-const algorithmName = "simple search"
+const algorithmName = "binary search"
 
 func main() {
 	// MOCK SORTED LIST
@@ -18,7 +18,7 @@ func main() {
 
 	// RUN ALGORITHM
 	item := 56
-	result, it := simpleSearch(sl, item)
+	result, it := binarySearch(sl, item)
 	log.Printf("is %d present? [%v] | iterations: %d \n", item, result, it)
 
 	// FINNISH
@@ -26,12 +26,25 @@ func main() {
 	log.Printf("FINISHED. Elapsed time: %v\n", elapsed)
 }
 
-func simpleSearch(sortedList []int, item int) (bool, int) {
+func binarySearch(sortedList []int, item int) (bool, int) {
 	iterations := 0
-	for k := range sortedList {
+	minIndex := 0
+	maxIndex := len(sortedList) - 1
+
+	for minIndex <= maxIndex {
 		iterations++
-		if sortedList[k] == item {
+		mid := (maxIndex + minIndex) / 2
+		guess := sortedList[mid]  
+
+		// check if mean is the desired value
+		if guess == item {
 			return true, iterations
+		}
+		// check guess and define new range
+		if guess > item {
+			maxIndex = mid - 1
+		} else {
+			minIndex = mid + 1
 		}
 	}
 	return false, iterations
